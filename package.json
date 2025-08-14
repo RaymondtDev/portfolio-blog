@@ -5,6 +5,7 @@
     "install-client": "cd frontend && npm install",
     "install-server": "cd backend && npm install",
     "build-client": "cd frontend && npm run build",
+    "copy-client": "rm -rf backend/dist && cp -r frontend/dist backend/",
     "start-server": "node backend/app.js",
     "start": "npm run start-server",
     "build": "npm run install-client && npm run install-server && npm run build-client"
