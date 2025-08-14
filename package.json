@@ -1,0 +1,13 @@
+{
+  "name": "mern-app",
+  "private": true,
+  "scripts": {
+    "install-client": "cd frontend && npm install",
+    "install-server": "cd backend && npm install",
+    "bfrontend": "cd frontend && npm run build",
+    "start-server": "node backend/app.js",
+    "start": "npm run start-server",
+    "build": "npm run install-client && npm run install-server && npm run build-client"
+  }
+}
+
