@@ -24,6 +24,15 @@ store.on("error", (error) => {
 const PORT = process.env.PORT || 4000;
 
 //middleware
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "frontend", "dist")));
+
+  app.use('/api/posts', require('./routes/posts'));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+  });
+};
 app.use(cookieParser());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 // app.use(helmet());
@@ -48,14 +57,6 @@ app.use("/api/blog", require("./routes/blogPostRoutes"));
 app.use("/api/upload", uploadRoute);
 app.use("/api/messages", require("./routes/messageRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-  });
-};
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
