@@ -2,7 +2,7 @@
   "name": "mern-app",
   "private": true,
   "scripts": {
-    "install-client": "cd frontend && npm install",
+    "install-server": "cd backend && npm install",
     "build": "npm run install-server && npm run build-client",
     "build-client": "cd frontend && npm install && npx vite build",
     "copy-client": "rm -rf backend/dist && cp -r frontend/dist backend/",
