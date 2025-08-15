@@ -56,6 +56,12 @@ app.use("/api/upload", uploadRoute);
 app.use("/api/messages", require("./routes/messageRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
 
+app._router.stack.forEach(r => {
+  if (r.route && r.route.path) {
+    console.log(r.route.path);
+  }
+});
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
