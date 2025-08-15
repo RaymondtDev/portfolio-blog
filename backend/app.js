@@ -3,7 +3,6 @@ require("./scripts/cron");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const helmet = require("helmet");
 const mongoose = require("mongoose");
 const uploadRoute = require("./routes/upload");
 const session = require("express-session");
@@ -32,8 +31,7 @@ if (process.env.NODE_ENV === "production") {
   });
 };
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-// app.use(helmet());
+app.use(cors({ origin: "http://localhost:5173/", credentials: true }));
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(session({
