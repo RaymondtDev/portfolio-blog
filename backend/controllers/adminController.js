@@ -54,6 +54,8 @@ exports.login = async (req, res) => {
     // check is session is set
     if (req.session.jwt) {
       console.log("Session is set", req.session.jwt);
+    } else {
+      console.log("Session is not set");
     }
 
   } catch (error) {
