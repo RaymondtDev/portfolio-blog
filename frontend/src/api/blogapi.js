@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:4000/api" });
+const API = axios.create({ baseURL: import.meta.env.MODE === "development" ? "/api" : `${import.meta.env.VITE_BASE_URL}/api` });
 
 // Admin API routes
 export const getAdmin = () => API.get("/admin", { withCredentials: true })
