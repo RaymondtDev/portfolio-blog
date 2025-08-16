@@ -49,14 +49,6 @@ app.use("/api/upload", uploadRoute);
 app.use("/api/messages", require("./routes/messageRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-  });
-};
-
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

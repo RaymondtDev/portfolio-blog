@@ -20,7 +20,7 @@ exports.createAdmin = async (req, res) => {
 
 exports.getAdmin = (req, res) => {
   res.json({ admin: req.admin, message: "Admin data retrieved successfully" });
-}
+};
 
 exports.login = async (req, res) => {
   try {
