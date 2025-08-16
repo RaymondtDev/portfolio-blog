@@ -26,14 +26,13 @@ const PORT = process.env.PORT || 4000;
 const IN_PROD = process.env.NODE_ENV === "production";
 
 //middleware
-app.use(cookieParser());
 app.use(cors({ 
   origin: ["http://localhost:5173", "https://portfolio-blog-coral-nine.vercel.app"],
   credentials: true 
 }));
-// app.use(helmet());
-app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.set("trust proxy", 1); // trust first proxy for secure cookies in production
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,
@@ -46,6 +45,9 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000 // 1 day
   }
 }));
+app.use(cookieParser());
+app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // routes
 app.use("/api/admin", require("./routes/adminRoutes"));
