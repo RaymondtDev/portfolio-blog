@@ -51,6 +51,10 @@ exports.login = async (req, res) => {
 
     req.session.jwt = token;
     res.status(200).json({ message: "Login successful", admin });
+    // check is session is set
+    if (req.session.jwt) {
+      console.log("Session is set", req.session.jwt);
+    }
 
   } catch (error) {
     res.status(500).json({ error: error.message });
