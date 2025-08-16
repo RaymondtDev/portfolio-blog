@@ -3,12 +3,12 @@ import { useRef, useState, useEffect } from "react";
 function CoverImageUploader({ cover, setCover }) {
   const fileInputRef = useRef();
   const [previewUrl, setPreviewUrl] = useState(
-    typeof cover === "string" && cover ? cover.startsWith("http") ? cover : `http://localhost:4000/uploads/${cover}` : null
+    typeof cover === "string" && cover ? cover.startsWith("https") ? cover : `http://localhost:4000/uploads/${cover}` : null
   );
 
   useEffect(() => {
     if (cover && typeof cover === "string") {
-      setPreviewUrl(cover.startsWith("http") ? cover : `http://localhost:4000/uploads/${cover}`);
+      setPreviewUrl(cover.startsWith("https") ? cover : `http://localhost:4000/uploads/${cover}`);
     } else if (cover && cover instanceof File) {
       setPreviewUrl(URL.createObjectURL(cover));
     } else {
