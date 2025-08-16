@@ -23,6 +23,8 @@ store.on("error", (error) => {
 
 const PORT = process.env.PORT || 4000;
 
+const IN_PROD = process.env.NODE_ENV === "production";
+
 //middleware
 app.use(cookieParser());
 app.use(cors({ 
@@ -38,9 +40,9 @@ app.use(session({
   saveUninitialized: false,
   store: store,
   cookie: {
-    secure: process.env.NODE_ENV === "production",
+    secure: IN_PROD,
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: IN_PROD ? "none" : "strict",
     maxAge: 24 * 60 * 60 * 1000 // 1 day
   }
 }));

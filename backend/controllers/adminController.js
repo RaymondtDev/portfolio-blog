@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const sanitize = require("mongo-sanitize");
 
 const JWT_SECRET = process.env.JWT_SECRET;
+const IN_PROD = process.env.NODE_ENV === "production";
 
 exports.createAdmin = async (req, res) => {
   try {
@@ -60,8 +61,8 @@ exports.logout = (req, res) => {
   req.session.destroy();
   res.clearCookie("connect.sid", {
     httpOnly: true,
-    sameSite: "none",
-    secure: process.env.NODE_ENV === "production"
+    sameSite: IN_PROD ? "none" : "strict",
+    secure: IN_PROD
   });
   res.json({ message: "Logout successful" });
 };
