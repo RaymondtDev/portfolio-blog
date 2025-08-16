@@ -60,7 +60,7 @@ exports.logout = (req, res) => {
   req.session.destroy();
   res.clearCookie("connect.sid", {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: "none",
     secure: process.env.NODE_ENV === "production"
   });
   res.json({ message: "Logout successful" });
