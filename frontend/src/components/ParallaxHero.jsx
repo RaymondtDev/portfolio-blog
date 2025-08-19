@@ -17,12 +17,12 @@ function ParallaxHero({ children, classname = "", image}) {
 
   return (
     <div
-      className={`${classname} full-width-content h-[80vh] relative -z-50`}
+      className={`${classname} full-width-content h-[50vh] sm:h-[80vh] relative -z-50`}
       style={{ 
         backgroundImage: `url(${image})`,
-        backgroundSize: "cover",
-        backgroundPosition: `center -${offset * 0.15}px`,
-        backgroundAttachment: "scroll",
+        backgroundSize: window.innerWidth > 640 ? "cover" : "auto 130%",
+        backgroundPosition: `center -${offset * 0.2}px`,
+        backgroundAttachment: window.innerWidth > 640 ? "scroll" : "initial",
         backgroundRepeat: "no-repeat",
         transition: "background-position 0.1s ease-in-out",
       }}
