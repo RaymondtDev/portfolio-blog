@@ -3,6 +3,14 @@
     {
       "source": "/uploads/:path*",
       "destination": "https://portfolio-blog-9y9r.onrender.com/uploads/:path*"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://portfolio-blog-9y9r.onrender.com/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
