@@ -125,8 +125,8 @@ exports.deletePost = async (req, res) => {
     const blogPost = await BlogPost.findById(sanitize(id));
     if (!blogPost) return res.status(404).send("Blog post not found");
 
-    if (blog.coverImage?.public_id) {
-      await cloudinary.uploader.destroy(blog.coverImage.public_id);
+    if (blogPost.cover?.public_id) {
+      await cloudinary.uploader.destroy(blogPost.cover.public_id);
     }
 
     await blogPost.deleteOne();
