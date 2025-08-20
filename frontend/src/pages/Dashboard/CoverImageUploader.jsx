@@ -2,13 +2,11 @@ import { useRef, useState, useEffect } from "react";
 
 function CoverImageUploader({ cover, setCover }) {
   const fileInputRef = useRef();
-  const [previewUrl, setPreviewUrl] = useState(
-    typeof cover === "string" && cover ? cover.startsWith("https") ? cover : `http://localhost:4000/uploads/${cover}` : null
-  );
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   useEffect(() => {
     if (cover && typeof cover === "string") {
-      setPreviewUrl(cover.startsWith("https") ? cover : `http://localhost:4000/uploads/${cover}`);
+      setPreviewUrl(cover);
     } else if (cover && cover instanceof File) {
       setPreviewUrl(URL.createObjectURL(cover));
     } else {
@@ -69,7 +67,7 @@ function CoverImageUploader({ cover, setCover }) {
         />
       </label>
 
-      {cover && (
+      {cover && cover instanceof File && (
         <p className="mt-2 text-sm text-gray-500">Selected: <strong>{cover.name}</strong></p>
       )}
     </div>

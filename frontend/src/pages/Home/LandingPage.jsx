@@ -83,6 +83,24 @@ function LandingPage() {
           <div>
             <h2 className="text-[var(--text-color)]">Interested? <br /> Feel free to reach out!</h2>
             <p className="text-[var(--secondary-text-color)]">I'm looking forward to hearing from you. Let's build something amazing together!</p>
+            <div className="flex flex-col gap-2 mt-8">
+              <a href="https://wa.me/27661331990" target="_blank" className="flex items-center gap-3">
+                <div className="size-10"><img src="/icons/whatsapp.svg" alt="whatsapp icon" /></div>
+                <p className="text-white">0661331990</p>
+              </a>
+              <a href="https://web.facebook.com/phahlamohlaka.raymond.thabiso" target="_blank" className="flex items-center gap-3">
+                <div className="size-10"><img src="/icons/facebook.svg" alt="facebook icon" /></div>
+                <p className="text-white">Raymond Thabiso Phahlamohlaka</p>
+              </a>
+              <a href="https://za.linkedin.com/in/thabiso-phahlamohlaka-533b13b7" target="_blank" className="flex items-center gap-3">
+                <div className="size-10"><img src="/icons/linkedin.svg" alt="linkedin icon" /></div>
+                <p className="text-white">Thabiso Phahlamohlaka</p>
+              </a>
+              <a href="https://github.com/raymondtDev" target="_blank" className="flex items-center gap-3">
+                <div className="size-10"><img src="/icons/github.svg" alt="github icon" /></div>
+                <p className="text-white">RaymondtDev</p>
+              </a>
+            </div>
           </div>
         </div>
         <div className="right col-span-[-8/-2]">

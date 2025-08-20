@@ -1,6 +1,7 @@
 const BlogPost = require("../models/BlogPost");
 const sanitize = require("mongo-sanitize");
 const slugify = require("slugify");
+const cloudinary = require("../config/cloudinary");
 const path = require("path");
 const fs = require("fs");
 
@@ -40,7 +41,10 @@ exports.createPost = async (req, res) => {
       content: sanitize(content),
       tags: tags?.map(tag => sanitize(tag)),
       author: req.admin.id,
-      cover: req.file?.filename || undefined
+      cover: {
+        url: req.file?.path || undefined,
+        public_id: req.file?.filename || undefined
+      }
     });
     await blogPost.save();
     res.status(201).json(blogPost);
@@ -94,11 +98,14 @@ exports.updatePost = async (req, res) => {
 
     // if there is a new cover image, update it
     if (req.file) {
-      // if (blogPost.cover && !blogPost.cover.startsWith("http")) {
-      //   const oldPath = path.join(__dirname, "..", "uploads", blogPost.cover);
-      //   fs.existsSync(oldPath) && fs.unlinkSync(oldPath);
-      // }
-      blogPost.cover = req.file.filename;
+      if (blogPost.cover?.public_id) {
+        await cloudinary.uploader.destroy(blogPost.cover.public_id);
+      }
+
+      blogPost.cover = {
+        url: req.file.path,
+        public_id: req.file.filename
+      };
     }
 
     const updatedPost = await blogPost.save();
@@ -115,8 +122,14 @@ exports.deletePost = async (req, res) => {
     
     const { id } = req.params;
 
-    const blogPost = await BlogPost.findOneAndDelete({ _id: sanitize(id) });
+    const blogPost = await BlogPost.findById(sanitize(id));
     if (!blogPost) return res.status(404).send("Blog post not found");
+
+    if (blog.coverImage?.public_id) {
+      await cloudinary.uploader.destroy(blog.coverImage.public_id);
+    }
+
+    await blogPost.deleteOne();
 
     res.status(200).send("Blog post deleted successfully");
 

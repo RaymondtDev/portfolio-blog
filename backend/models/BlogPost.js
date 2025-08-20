@@ -4,8 +4,12 @@ const slugify = require("slugify");
 
 const BlogPostSchema = new Schema({
   cover: {
-    type: String,
-    default: "https://via.placeholder.com/600x400?text=No+Image"
+    url: {
+      type: String,
+      required: true,
+      default: "https://picsum.photos/1200/1080"
+    },
+    public_id: { type: String }
   },
   title: {
     type: String,
