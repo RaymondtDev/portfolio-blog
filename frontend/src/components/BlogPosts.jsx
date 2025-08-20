@@ -28,7 +28,7 @@ function BlogPosts() {
     <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {blogPosts?.slice(0,1).map(post => {
         if (post.tags.includes("featured")) {
-          return <div className="col-span-full rounded-md h-[400px] bg-cover bg-no-repeat relative" style={{ backgroundImage: `url(/uploads/${post.cover})` }}>
+          return <div className="col-span-full rounded-md h-[400px] bg-cover bg-no-repeat relative" style={{ backgroundImage: `url(${post.cover.url})`}}>
             <div className="absolute left-0 bottom-0 w-full px-5 py-12 rounded-b-md bg-linear-to-t from-black/95 to-black/0">
               <h1 className="text-white text-4xl" style={{ marginBottom: "10px" }}>Featured</h1>
               <p className="text-white" style={{ marginBottom: "10px" }}>{post.title}</p>

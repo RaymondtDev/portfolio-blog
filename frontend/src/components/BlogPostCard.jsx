@@ -12,7 +12,7 @@ function BlogPostCard({ children, post }) {
     <div className="shadow-md relative rounded-md grid grid-rows-[150px_1fr_1fr] sm:grid-rows-[200px_1fr_1fr]">
       <figure className="mt-0 mb-0">
         <img
-          src={`/uploads/${post.cover}`}
+          src={`${post.cover.url}`}
           alt="cover-image"
           className="object-cover rounded-t-md"
         />

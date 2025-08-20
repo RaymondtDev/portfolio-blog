@@ -22,7 +22,7 @@ function BlogPost() {
 
   return (
     <div className="full-width grid-layout">
-      <ParallaxHero image={`/uploads/${post.cover}`} classname="overlay">
+      <ParallaxHero image={`${post.cover.url}`} classname="overlay">
         <div className="absolute bottom-0 left-0 pb-28 text-white">
           <div className="mb-3">
             <h1 className="text-white">{post.title}</h1>
