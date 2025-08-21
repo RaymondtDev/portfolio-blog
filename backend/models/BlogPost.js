@@ -24,6 +24,9 @@ const BlogPostSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  embeddedImages: [
+    { url: String, public_id: String }
+  ],
   author: {
     type: Schema.Types.ObjectId,
     ref: "Admin",

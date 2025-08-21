@@ -2,6 +2,7 @@ const BlogPost = require("../models/BlogPost");
 const sanitize = require("mongo-sanitize");
 const slugify = require("slugify");
 const cloudinary = require("../config/cloudinary");
+const { extractCloudinaryIds } = require("../utils/extractCloudinaryIds");
 const path = require("path");
 const fs = require("fs");
 
@@ -33,8 +34,10 @@ exports.getBlogPosts = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   try {
-    
+
     const { title, content, tags } = req.body;
+
+    const publicUrls = extractCloudinaryIds(content);
 
     const blogPost = new BlogPost({
       title: sanitize(title),
@@ -44,7 +47,11 @@ exports.createPost = async (req, res) => {
       cover: {
         url: req.file?.path || undefined,
         public_id: req.file?.filename || undefined
-      }
+      },
+      embeddedImages: publicUrls.map(id => ({
+        url: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${id}`,
+        public_id: id
+      }))
     });
     await blogPost.save();
     res.status(201).json(blogPost);
@@ -88,7 +95,21 @@ exports.updatePost = async (req, res) => {
     }
 
     if (content) {
+      const oldIds = extractCloudinaryIds(blogPost.content);
+      const newIds = extractCloudinaryIds(content);
+
+      const removeIds = oldIds.filter(id => !newIds.includes(id));
+
+      for (const id of removeIds) {
+        await cloudinary.uploader.destroy(id);
+      }
+
       blogPost.content = sanitize(content);
+
+      blogPost.embeddedImages = newIds.map(id => ({
+        url: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${id}`,
+        public_id: id
+      }))
     }
 
     if (tags) {
@@ -127,6 +148,13 @@ exports.deletePost = async (req, res) => {
 
     if (blogPost.cover?.public_id) {
       await cloudinary.uploader.destroy(blogPost.cover.public_id);
+    }
+
+    // Delete embedded images from Cloudinary
+    for (const image of blogPost.embeddedImages) {
+      if (image.public_id) {
+        await cloudinary.uploader.destroy(image.public_id);
+      }
     }
 
     await blogPost.deleteOne();
