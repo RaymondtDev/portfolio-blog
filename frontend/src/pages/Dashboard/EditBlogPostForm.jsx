@@ -34,7 +34,7 @@ function EditBlogPostForm() {
       setTitle(post.title || "");
       setContent(post.content || "");
       setTags(post.tags || []);
-      setCover(post.cover || null);
+      setCover(post.cover.url || null);
     }
   }, [post]);
 
