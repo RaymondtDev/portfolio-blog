@@ -79,7 +79,7 @@ exports.getPostBySlug = async (req, res) => {
   }
 };
 
-// TODO: update and delete post by id
+
 exports.updatePost = async (req, res) => {
   try {
     
@@ -100,16 +100,15 @@ exports.updatePost = async (req, res) => {
 
       const removeIds = oldIds.filter(id => !newIds.includes(id));
 
-      for (const id of removeIds) {
-        await cloudinary.uploader.destroy(id);
-      }
+      await Promise.all(removeIds.map(id => cloudinary.uploader.destroy(id)));
 
-      blogPost.content = sanitize(content);
+
+      blogPost.content = content;
 
       blogPost.embeddedImages = newIds.map(id => ({
         url: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${id}`,
         public_id: id
-      }))
+      }));
     }
 
     if (tags) {
