@@ -2,7 +2,7 @@ const BlogPost = require("../models/BlogPost");
 const sanitize = require("mongo-sanitize");
 const slugify = require("slugify");
 const cloudinary = require("../config/cloudinary");
-const { extractCloudinaryIds } = require("../utils/extractCloudinaryIds");
+const extractCloudinaryIds = require("../utils/extractCloudinaryIds");
 const path = require("path");
 const fs = require("fs");
 
@@ -95,17 +95,20 @@ exports.updatePost = async (req, res) => {
     }
 
     if (content) {
-      const oldIds = extractCloudinaryIds(blogPost.content);
-      const newIds = extractCloudinaryIds(content);
-
-      const removeIds = oldIds.filter(id => !newIds.includes(id));
-
-      await Promise.all(removeIds.map(id => cloudinary.uploader.destroy(id)));
-
-
       blogPost.content = content;
 
-      blogPost.embeddedImages = newIds.map(id => ({
+      // Extract new embedded image IDs from the updated content
+      const newEmbeddedImageIds = extractCloudinaryIds(content);
+
+      // Find and delete removed images from Cloudinary
+      for (const image of blogPost.embeddedImages) {
+        if (!newEmbeddedImageIds.includes(image.public_id)) {
+          await cloudinary.uploader.destroy(image.public_id);
+        }
+      }
+
+      // Update the embeddedImages array with the new list
+      blogPost.embeddedImages = newEmbeddedImageIds.map(id => ({
         url: `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${id}`,
         public_id: id
       }));
